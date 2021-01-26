@@ -55,49 +55,51 @@ Configure the following settings on the **JWT Sign** window:
 * **Name**: Enter an appropriate name for the filter to display in a policy.
 * **Token location**: Enter the selector expression to obtain the payload to be signed. The content can be JWT claims, encrypted token, or you can enter a different option.
 
-Configure the following fields in the **Signature Key and Algorithm** tab:
+### Signature Key and Algorithm
 
-* **Key type**: Select whether to sign with a private (asymmetric) key or HMAC (symmetric key).
+On the **Signature Key and Algorithm** tab, you can select either a symmetric or an asymmetric key to sign the JWT. Select the appropriate option and configure the fields in the corresponding section.
 
-### Asymmetric key type
+* **Key type**: Select whether to sign with a private key (asymmetric) or HMAC (symmetric key).
+
+#### Asymmetric key type
 
 If you selected the asymmetric key type, configure the following fields in the **Asymmetric** section:
 
 * **Signing key**: Select a certificate with a private key from the certificate store. The private key is used to sign the payload, while the certificate is used to generate key related headers in the JOSE header.
 * **Selector expression**: Alternatively, enter a selector expression to get the alias of the private key in the certificate store.
-* **Algorithm**: Select the algorithm used to sign the JWT. The available algorithms are listed in the following table:
+* **Algorithm**: Select one of the available algorithms to sign the JWT.
 
-| Algorithm | description                                    |
-|-----------|------------------------------------------------|
-| ES256     | ECDSA using P-256 and SHA-256                  |
-| ES384     | ECDSA using P-384 and SHA-384                  |
-| ES512     | ECDSA using P-521 and SHA-512                  |
-| RS256     | RSASSA-PKCS1-v1_5 using SHA-256                |
-| RS384     | RSASSA-PKCS1-v1_5 using SHA-384                |
-| RS512     | RSASSA-PKCS1-v1_5 using SHA-512                |
-| PS256     | RSASSA-PSS using SHA-256 and MGF1 with SHA-256 |
-| PS384     | RSASSA-PSS using SHA-384 and MGF1 with SHA-384 |
-| PS512     | RSASSA-PSS using SHA-512 and MGF1 with SHA-512 |
+  | Algorithm | Description                                    |
+  |-----------|------------------------------------------------|
+  | ES256     | ECDSA using P-256 and SHA-256                  |
+  | ES384     | ECDSA using P-384 and SHA-384                  |
+  | ES512     | ECDSA using P-521 and SHA-512                  |
+  | RS256     | RSASSA-PKCS1-v1_5 using SHA-256                |
+  | RS384     | RSASSA-PKCS1-v1_5 using SHA-384                |
+  | RS512     | RSASSA-PKCS1-v1_5 using SHA-512                |
+  | PS256     | RSASSA-PSS using SHA-256 and MGF1 with SHA-256 |
+  | PS384     | RSASSA-PSS using SHA-384 and MGF1 with SHA-384 |
+  | PS512     | RSASSA-PSS using SHA-512 and MGF1 with SHA-512 |
 
-The selected algorithm must be compatible with the selected certificate. When a certificate is selected from the certificate store, this will be validated when the filter is saved. A selector based alias can only be validated at runtime, and an incompatible certificate will cause the filter to fail.
+  The selected algorithm must be compatible with the selected certificate. When a certificate is selected from the certificate store, this will be validated when the filter is saved. A selector based alias can only be validated at runtime, and an incompatible certificate will cause the filter to fail.
 
-* **Use Key ID (kid)**: Selecting this checkbox will ad a `kid` header parameter to the JOSE header part of the token. The `kid` header parameter is a hint indicating which public/private key pair was used to secure the JWS. The following options are available:
-    * **Certificate Alias**: The alias of the selected Certificate.
-    * **x5t Certificate Thumbrint**: A Base64Url encoded SHA1 digest (thumbprint) of the DER encoded X509 Certificate.
-    * **x5t#S256 Certificate Thumbprint**: A Base64Url encoded SHA256 digest (thumbprint) of the DER encoded X509 Certificate.
-    * **Custom Key ID**: a static string or selector expression can be used to set a key id that has a contextual meaning.
+* **Use Key ID (kid)**: Selecting this option will add a `kid` header parameter to the JOSE header part of the token. The `kid` header parameter is a hint indicating which public/private key pair was used to secure the JWS. The following options are available:
+    * **Use Cert Alias**: The alias of the selected Certificate.
+    * **Compute Cert x5t**: A Base64Url encoded SHA1 digest (thumbprint) of the DER encoded X509 Certificate.
+    * **Compute Cert x5t#256**: A Base64Url encoded SHA256 digest (thumbprint) of the DER encoded X509 Certificate.
+    * **Selector Expression**: A static string or selector expression can be used to set a custom key ID that has a contextual meaning.
 
-### Symmetric key type
+#### Symmetric key type
 
-If you selected the symmetric key type, complete the following fields in the **Symmetric** section:
+If you selected the **Symmetric key type** option, complete the following fields in the **Symmetric** section:
 
 * **Shared key**: Enter the shared key used to sign the payload. The key should be given as a base64-encoded byte array and must use the following minimum lengths depending on the selected algorithm used to sign:
 
-| Algorithm                  | Minimum key length  |
-|----------------------------|---------------------|
-| HMAC using SHA-256 (HS256) | 32 bytes (256 bits) |
-| HMAC using SHA-384 (HS384) | 48 bytes (384 bits) |
-| HMAC using SHA-512 (HS512) | 64 bytes (512 bits) |
+  | Algorithm                  | Minimum key length  |
+  |----------------------------|---------------------|
+  | HMAC using SHA-256 (HS256) | 32 bytes (256 bits) |
+  | HMAC using SHA-384 (HS384) | 48 bytes (384 bits) |
+  | HMAC using SHA-512 (HS512) | 64 bytes (512 bits) |
 
 * **Selector expression**: Alternatively, enter a selector expression to obtain the shared key. The value returned from the selector should contain:
 
@@ -106,7 +108,43 @@ If you selected the symmetric key type, complete the following fields in the **S
 
 * **Algorithm**: Select the algorithm used to protect the token.
 
-* **Use Key ID (kid)**: Selecting this checkbox will ad a `kid` header parameter to the JOSE header part of the token. The `kid` header parameter is a hint indicating which public/private key pair was used to secure the JWS. This value can be defined as a static string or a selector expression.
+* **Use Key ID (kid)**: Selecting this option will add a `kid` header parameter to the JOSE header part of the token. The `kid` header parameter is a hint indicating which public/private key pair was used to secure the JWS. This value can be defined as a static string or a selector expression.
+
+### Signature JOSE Header
+
+This tab configures which claims are present in the JWT header. The following header options can be enabled or disabled:
+
+* **Generate 'typ' claim**.
+* **JWK Set URL (jku)**: A selector can be used to specify the `jku`. If the selector evaluates as empty or null, the filter will fail.
+* **Embed all key related claims in the 'jwk' claim (except for 'jku')**: If this is selected, all of the following header claims will be embedded in a JWK object within the header.
+* **Generate 'x5t' thumbprint**: SHA1 thumbprint derived from the signing certificate.
+* **Generate 'x5t#256' thumbprint**: SHA256 thumbprint derived from the signing certificate.
+* **Include 'x5c' certificate chain**: Adds the PEM encoded certificate chain of the signing certificate.
+* **Include 'x5u' certificate URL**: A selector can be used to specify the `x5u`. If the selector evaluates as empty or null, the filter will fail.
+
+You can find a detailed explanation for each header at [JWS RFC 7515](https://tools.ietf.org/html/rfc7515#section-4).
+
+Enabling all of the settings will produce a header with the following structure:
+
+```
+{
+  "jku": "https://axway.com/api/jwk_uri",
+  "typ": "JOSE",
+  "jwk": {
+    "kty": "RSA",
+    "x5t#S256": "3WcxVjJWOUxIIgMmLOf20hj-lR2qn-mwXZHIU8D9CAk",
+    "e": "AQAB",
+    "x5t": "2pdrqe1djoNnHxebh_MfLYl3hFg",
+    "kid": "CN=Change this for production",
+    "x5c": [
+      "MIICwzCCAasCBgE6HBsdpzANBgkqhkiG9w0BAQUFADAlMSMwIQYDVQQDExpDaGFuZ2UgdGhpcyBmb3IgcHJvZHVjdGlvbjAeFw0xMjEwMDExMTMyMDBaFw0zNzEwMDExMTMyMDBaMCUxIzAhBgNVBAMTGkNoYW5nZSB0aGlzIGZvciBwcm9kdWN0aW9uMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAm2I2+GHcXXzwyjqMP6E4shjxfpAfgqbCY/nF5oTq0SkcRKvsdJzuLbmufkqx1rQqxwF/aZnbZppcVtR4TAhExmo2NnV7WjSwdd+EynQJrkWlsuK1UQ3JHMo5iAAEQ11xoMBIsUwfg5HYKCELmjnWetwhm5aUJ9Gq45v9kzeZki2oCoVe5LQfVVHEYssr+SfVrhi6+OffeefgCRse6vv5T4zlh4xXKDNUsBxYYB3Vg97tDcdgpfx8BudpBx+1ITk9Dazu8eegXN5KdRqJGgM5LSRIWjK+OumR1a2ReUcXlglWTVfsG43UUUby2bql3E3uc7XpxzQaPpt4aDqfOYMUxwIDAQABMA0GCSqGSIb3DQEBBQUAA4IBAQAl+yHca9jCZ/zVgtITGWGKQiNb8UqFJE+QxmLt+j2lEWpG3Fd1M40faRrDujbk8WvG4Iz/NamlvvkbpbMSRY67lPpjsZOKlezTTE2YQTtyuFT7QQTYHYPZWK4Dg8QisMI5vHnrzsPc9ZAHm+IZrxbuVXsZQoU7qyaMdG27WWVa6vJ4nXjuMO6sOtl+UnEXpn3vCpNzkkbJW2LvFCs0Ymnx7Wet3inskOKg//AGuv+m3rD/Byphd8Iblt3jSNDwMcG+Yhpi/Wd50iMFFkTnrkEmosvqWL5j6N7eJZszgdL7Zz9ztASutzU4a0YFpv111NxpBdNpphOVED85IbRHxTjL"
+    ],
+    "x5u": "https://axway.com/path/to/cert",
+    "n": "m2I2-GHcXXzwyjqMP6E4shjxfpAfgqbCY_nF5oTq0SkcRKvsdJzuLbmufkqx1rQqxwF_aZnbZppcVtR4TAhExmo2NnV7WjSwdd-EynQJrkWlsuK1UQ3JHMo5iAAEQ11xoMBIsUwfg5HYKCELmjnWetwhm5aUJ9Gq45v9kzeZki2oCoVe5LQfVVHEYssr-SfVrhi6-OffeefgCRse6vv5T4zlh4xXKDNUsBxYYB3Vg97tDcdgpfx8BudpBx-1ITk9Dazu8eegXN5KdRqJGgM5LSRIWjK-OumR1a2ReUcXlglWTVfsG43UUUby2bql3E3uc7XpxzQaPpt4aDqfOYMUxw"
+  }
+  "alg": "RS256",
+}
+```
 
 ## JWT Verify filter
 
