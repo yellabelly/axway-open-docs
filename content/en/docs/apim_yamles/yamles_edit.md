@@ -28,11 +28,73 @@ Building a new complex policy without an existing YAML format example might be c
 
 We recommend you to develop a new complex policy in an XML project that contains all the configuration you previously converted to YAML, so that you can reference other existing configuration. You must ensure that all referenced entities that need to be resolvable can be resolved eventually.
 
+### Convert the XML configuration fragment to YAML
+
+Certificates and private keys that exist in the XML federated configuration, which then get converted to YAML format, will be formatted as is, without header (starting line `-----BEGIN...`) and footer (ending line `-----END...`).
+
+The related certificate and private key files in the YAML configuration will be formatted as follows:
+
+`Axway-converted.yaml`
+
+```yaml
+---
+type: Certificate
+fields:
+  dname: Axway-converted
+  key: '{{file "Axway-converted-key.pem"}}'
+  content: '{{file "Axway-converted-cert.pem"}}'
+```
+
+`Axway-converted-key.pem`
+
+```
+---
+MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDLd+Zv/rC6Wf/FAGc6YM8APIZD
+MgEtJjOWKJiOajzI22GFsUcU3XYfV8oayI12j67IMVaD1RU+o+u6D+Y7tPj60/kvqORAjpnad7OS
+0zs59KMDvfXghM3EkN8/mDxb11yK19VMJvk2ZMcpRn/6/gCFbpa6Nj8OpF7oLCRhbcue1R+JiSLF
+R9zbJzxfkgkQ9Q256+ZMlOgYdrqpytTltYPOrKD3vKR9DiOTc/KC5kCZFmkgDJz5AQTpTtvZCXJW
+aro+PbAqbyc//ABTTrhTIBkyB+aFM49hg/Ej90KitvxI/Nu4lzT2XiDd9wqiTzElYM+Q0UMk0BFd
+vnckh1sLYHe3AgMBAAECggEABK9VEf0WSqQp3Hpe5hw2h/XczY1IM6buhyWWJalSjvlmLHLhhRx4
+TM5zq9w0TaePSbLBIDX20ENr+RPGpFdNaFEbKrrDzqy55CrfaqEMexAj9MEZ+Tp1lnITgd5afW7f
+BZ9knOVE1bjKUSv7ZGcW0fuy4sS+/PJR8RybFdc2WgjZt0kw8L9fUsmq/M4ye00DVOoI/eTGjfky
+ooVtUAJJXYI1FMvUuyC43qJuOMpfme3xY79AOQpXBvTamG/xpr7/MX5Q4yxu5GEo7eLk91xwSKFG
+OYgC33SLgxOIRecLxgxZp72g4GZqGLzcjmTDxpMgS32RzbRtqDNCp5Twjvw0aQKBgQDmzo6WAMa9
+jCbEtXsqCQ4CkCYbMJp3d9Jxzk6R2kjwMRQLDL+P+YkIMd/tntrd3DS2vbdbzlGxFkDROhpV+T+T
+iYlqFkY60cUaeGBWyWTWkKksrLfsJz4M5/seflYX4L9H5vjDChybzpaViTUHof1xB6f44fheeW82
+sV7v+UQQ9QKBgQDhrWwtGJjccJgAfZwqnBd0snKDBUjpSlUgBQnyYzNXbM9IN9q4vaHymt5Zgg5f
+do4Bfjdmx4O3W6RtIysmw92hyad8SIbl2JNN15FwQQ2ZpgaIgsUyVQGywtkiXzFGnir3YyEjtb/S
+5y1X4Au2mnof1K2Q9UYUKeEsoLFNDj/KewKBgQCddz8AR/dPSlcIzWgB/bt5NC9LTZWU/EKvMjmY
+eHxaoqEyCLiI2Y4L8Tr9OuvHgXzVUAnQsKo7TxtZo3JkRXCCj8sYfancZ1E6BfZ0P2J0oK1KtWul
+ygAjfgFthHPoRoU54PLG3hc2lXNXAg0T8AihHMAUpNZ2XhLqFYjX4A/4IQKBgQCldRF3qq4ACKjY
+yz8g2lo0G9TrDIfdSrtIg4k8ZdCxizwZ1aGNirLefP8CHuFMyk3o+FHEEAkY+J5/yaYMgNPQl1kt
+PLtybqvpCWA/LeK7wMbPdRkBAuQA3Ox3T9V/0dzsjYgxd0JRbV6IK+JKmc1p4vLx8XHUvLOzlYkI
+VqccWwKBgByv6gva+WWT5H7CZCicURkLdkRx0RGJjZKW5m7uwWPLAkb5zVozsCSGhNZDX3xuPzqx
+z+m92RPtpagPgowuDomFodteFZOsSjCkvbiwx7JGEsvwEraMwxYGPg3sEpVa+bS/4Ptpj8llGMpN
+NWjvpIPxQaBeo3FHRDPFjvc7qjUP
+```
+
+`Axway-converted-cert.pem`
+
+```
+---
+MIICrTCCAZUCBgE9RY7XxjANBgkqhkiG9w0BAQUFADAaMRgwFgYDVQQDEw9TYW1wbGVzIFRlc3Qg
+Q0EwHhcNMTMwMzA3MTU1MzAwWhcNMzcwMTEwMTA1NjAwWjAaMRgwFgYDVQQDEw9TYW1wbGVzIFRl
+c3QgQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDLd+Zv/rC6Wf/FAGc6YM8APIZD
+MgEtJjOWKJiOajzI22GFsUcU3XYfV8oayI12j67IMVaD1RU+o+u6D+Y7tPj60/kvqORAjpnad7OS
+0zs59KMDvfXghM3EkN8/mDxb11yK19VMJvk2ZMcpRn/6/gCFbpa6Nj8OpF7oLCRhbcue1R+JiSLF
+R9zbJzxfkgkQ9Q256+ZMlOgYdrqpytTltYPOrKD3vKR9DiOTc/KC5kCZFmkgDJz5AQTpTtvZCXJW
+aro+PbAqbyc//ABTTrhTIBkyB+aFM49hg/Ej90KitvxI/Nu4lzT2XiDd9wqiTzElYM+Q0UMk0BFd
+vnckh1sLYHe3AgMBAAEwDQYJKoZIhvcNAQEFBQADggEBAECtUaJVPApyeJrxqb3j49QbtL3rhusQ
+ae70epkkU0XFu+8NuYoz4pVs5Mj9g0HPXXvRvgJAQzCzQ34XVFZGB18IjOkoyu0RodTadGi7fAH5
+0B/SEteGRhYV1JzE+IKxG3n6nTrrHgINL8+QL4eHiozEKfJ/vWqw1j2Zc/47vcalGYYqTJyrSmJy
+pX6tVTYRbArvwaU+LzYLjEJkWgfZc09eO8JiA1ZwE4ud5o9Tpbj5IdUQkoLyPTxtU0a6A2PMAs4j
+MTnD3Mh2YRB4gGCAPDN+Xl999ls2KCoVdLjXIhOD2YwWXGmv3vaAUyc32wwcro69/wXvj41tFIez
+w98SGM8=
+```
+
 ## Add a new certificate and private key to a YAML configuration
 
 This section covers the steps required to add a new certificate and private key to an existing YAML configuration.
-
-Note that certificates and private keys that exist in the XML federated configuration, which then get converted to YAML format, will be formatted as required with no additional steps required. In some cases, you might only need to add a new certificate to the YAML configuration, in this case the steps for the private key can be ignored.
 
 1. You must have a certificate in a `PEM` file and its related private key in a separate `PEM` file. For example, `Axway-cert.pem` and `Axway-key.pem`. The private key cannot be encrypted with OpenSSL, as it is not supported.
 
@@ -73,6 +135,8 @@ Note that certificates and private keys that exist in the XML federated configur
       key: '{{file "Axway-key.pem" "pem"}}'
       content: '{{file "Axway-cert.pem" "pem"}}'
     ```
+
+    The `pem` option in `{{file}}` placeholder is mandatory when using a `PEM` file containing header and footer.
 
 5. Edit another entity that requires a certificate and private key, for example, an `XML Signature filter` (see the `signingCert` field in the following example). It now points to the new certificate and private key via its YamlPK `/Environment Configuration/Certificate Store/Axway`.
 
@@ -118,30 +182,40 @@ cd apigateway/posix/bin
 The file `/home/user/yaml/Environment Configuration/Certificate Store/Axway-key.pem` has been encrypted
 ```
 
-The YAML configuration referenced in the `--source` parameter of the `encrypt` command must be the destination YAML configuration to ensure it is encrypted correctly.
+* `yamles encrypt` with `--file` option only supports encryption of `PEM` file containing header and footer.
 
-After you complete editing the YAML configuration, create a `.tar.gz` file and deploy it to your running API Gateway. Your API Gateway group must use the same encryption passphrase.
+* The YAML configuration referenced in the `--source` parameter of the `encrypt` command must be the destination YAML configuration to ensure it is encrypted correctly.
+
+* After you complete editing the YAML configuration, create a `.tar.gz` file and deploy it to your running API Gateway. Your API Gateway group must use the same encryption passphrase.
 
 {{< alert title="Note">}}Encrypting a private key via `openssl` and adding it to the YAML configuration is not supported.{{< /alert >}}
 
 ## Manually create an entity instance YAML file
 
-{{< alert title="Note">}}
-This section uses [Entity Types](/docs/apim_yamles/apim_yamles_references/yamles_types) directory.{{< /alert >}}
+To create an entity instance of [`NetService` type](/docs/apim_yamles/apim_yamles_references/yamles_types), perform the following:
 
-To create an entity instance of `NetService` type:
+1. Search for the `NetService.yaml` file within the `META-INF/types` directory.
 
-* Search for YAML file `NetService.yaml` within the `META-INF/types` directory.
-* To know what fields can be used, move up to the ancestor types:
+    To know what fields can be used, move up to the ancestor types:
+
     * `NetService.yaml` is contained within `JavaProcess` directory. Check the fields within YAML entity type file `JavaProcess.yaml`.
     * `JavaProcess.yaml` is contained within `Process` directory. Check the fields within YAML entity type file `Process.yaml`.
-    * Continue until reaching the root directory `Entity`.
-* Search for components. Use the same approach you have used to search for fields.
-* `NetService` has two components: `LoadableModule` and `ClassLoader`.
-    * Search for `LoadableModule.yaml` and `ClassLoader.yaml` YAML files within the `META-INF/types` directory.
-    * Execute the first steps again to get all required and optional fields for each entity type.
+    * Continue until you reach the root directory `Entity`.
 
-If the entity instance you have created is a [container entity](/docs/apim_yamles/yamles_structure#_parentyaml), create a new directory named like the new entity instance. Create a YAML file named `_parent.yaml`, and put in within the created directory.
+2. Search for components.
+
+    Use the same approach you have used to search for fields. `NetService` has two components: `LoadableModule` and `ClassLoader`. Search for `LoadableModule.yaml` and `ClassLoader.yaml` YAML files within the `META-INF/types` directory.
+3. Execute all the previous steps again to get all required and optional fields for each entity type.
+
+### Create a container entity
+
+If the entity instance you have created is a [container entity](/docs/apim_yamles/yamles_structure#_parentyaml):
+
+1. Create a new directory with the same name of the new entity instance.
+2. Create a YAML file named `_parent.yaml`.
+3. Add the YAML file to the newly created directory.
+
+Example:
 
 ```yaml
 ---
@@ -152,7 +226,14 @@ fields:
 
 ![new container entity](/Images/apim_yamles/yamles_new_container_entity.png)
 
-If the entity instance you have created is not a container entity, create a YAML file named like the field *name*, and add it to the correct directory:
+### Create a non-container entity
+
+If the entity instance you have created is not a container entity:
+
+1. Create a YAML file named like the **name** field.
+2. Add the YAM file to the correct directory.
+
+Example:
 
 ```yaml
 ---
