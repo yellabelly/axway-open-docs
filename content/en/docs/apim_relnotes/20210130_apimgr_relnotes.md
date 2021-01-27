@@ -25,6 +25,11 @@ For more information, see:
 * [Configure Advanced SSL settings](/docs/apim_policydev/apigw_gw_instances/general_services/#configure-advanced-ssl-settings)
 * [Connect to URL filter](/docs/apim_policydev/apigw_polref/routing_common/)
 
+### New backup passphrase parameter added to restore operation in kpsadmin
+
+We have added a new `--passphrase` parameter to the restore operation in `kpsadmin`.
+If the parameter is not specified the script will prompt for a passphrase. The passphrase parameter is provided to allow data that may be encrypted at rest, be decrypted when being restored into the target API Gateway environment. For more info, see [Manage KPS using kpsadmin](https://developjan21--axway-open-docs.netlify.app/docs/apim_policydev/apigw_kps/how_to_use_kpsadmin_command/).
+
 ## Important changes
 
 <!-- It is important, especially when upgrading from an earlier version, to be aware of the following changes in the behavior or operation of the product in this update.. -->
