@@ -67,7 +67,9 @@ placeholder
 
 The following are known issues for this update.
 
-placeholder
+| Internal ID | Description                                                                                                                                                                                                                                                                                                                                   |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RDAPI-22573 | Service pack update fails with the following message when passphrases are in use: `"Problem connecting to store: Invalid passphrase for configuration"`. |
 
 ## Update a classic (non-container) deployment
 
