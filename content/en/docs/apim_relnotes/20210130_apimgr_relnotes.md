@@ -30,6 +30,20 @@ For more information, see:
 We have added a new `--passphrase` parameter to the restore operation in `kpsadmin`.
 If the parameter is not specified the script will prompt for a passphrase. The passphrase parameter is provided to allow data that may be encrypted at rest, be decrypted when being restored into the target API Gateway environment. For more info, see [Manage KPS using kpsadmin](https://developjan21--axway-open-docs.netlify.app/docs/apim_policydev/apigw_kps/how_to_use_kpsadmin_command/).
 
+### YAML configuration store (Technical preview capability)
+
+This update includes bug fixes and enhanced functionality for YAML configuration as follows:
+
+* Support for [certificates and keys](/docs/apim_yamles/yamles_edit/#add-a-new-certificate-and-private-key-to-a-yaml-configuration) in standard PEM files.
+* Enhanced support for managing more configuration content in [externalized files](/docs/apim_yamles/yamles_externalized_files).
+* Restructured [entity type](/docs/apim_yamles/apim_yamles_references/yamles_types/) information into separate files to enable custom type support.
+* Enhanced policy readability.
+* Enhanced support for environmentalization with encryption.
+* Fix issue of reordering fields in YAML files after configuration edits via tooling.
+* Support for `${env.CERT}` environmentalization of certificates in the YAML configuration.
+
+See the [September 2020](/docs/apim_relnotes/20200930_apimgr_relnotes/#yaml-configuration-store-technical-preview-capability) release notes for an overview of this technical preview, and the [YAML configuration](/docs/apim_yamles/) documentation for more detailed information.
+
 ## Important changes
 
 <!-- It is important, especially when upgrading from an earlier version, to be aware of the following changes in the behavior or operation of the product in this update.. -->
