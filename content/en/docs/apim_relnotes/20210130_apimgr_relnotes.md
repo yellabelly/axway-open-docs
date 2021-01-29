@@ -25,24 +25,19 @@ For more information, see:
 * [Configure Advanced SSL settings](/docs/apim_policydev/apigw_gw_instances/general_services/#configure-advanced-ssl-settings)
 * [Connect to URL filter](/docs/apim_policydev/apigw_polref/routing_common/)
 
-### New backup passphrase parameter added to restore operation in kpsadmin
+### Backup passphrase parameter to restore operation in kpsadmin
 
 We have added a new `--passphrase` parameter to the restore operation in `kpsadmin`.
 If the parameter is not specified the script will prompt for a passphrase. The passphrase parameter is provided to allow data that may be encrypted at rest, be decrypted when being restored into the target API Gateway environment. For more info, see [Manage KPS using kpsadmin](https://developjan21--axway-open-docs.netlify.app/docs/apim_policydev/apigw_kps/how_to_use_kpsadmin_command/).
 
-### YAML configuration store (Technical preview capability)
+### Content Security Policy header to improve security
 
-This update includes bug fixes and enhanced functionality for YAML configuration as follows:
+The Content Security Policy (CSP) header sets a policy that instructs the browser to only fetch resources, such as scripts, images, or objects, from the specified locations. A compliant browser will deny loading any resources from locations not listed in the policy. The CSP header reduces an attacker's ability to inject malicious content, and helps to protect a web page from attacks like Cross-Site Scripting (XSS), dynamic code execution, and clickjacking.
 
-* Support for [certificates and keys](/docs/apim_yamles/yamles_edit/#add-a-new-certificate-and-private-key-to-a-yaml-configuration) in standard PEM files.
-* Enhanced support for managing more configuration content in [externalized files](/docs/apim_yamles/yamles_externalized_files).
-* Restructured [entity type](/docs/apim_yamles/apim_yamles_references/yamles_types/) information into separate files to enable custom type support.
-* Enhanced policy readability.
-* Enhanced support for environmentalization with encryption.
-* Fix issue of reordering fields in YAML files after configuration edits via tooling.
-* Support for `${env.CERT}` environmentalization of certificates in the YAML configuration.
+CSP header is added for both API Gateway and API Manager. Its value, or policy, is set in an environment variable, which is available from the following locations:
 
-See the [September 2020](/docs/apim_relnotes/20200930_apimgr_relnotes/#yaml-configuration-store-technical-preview-capability) release notes for an overview of this technical preview, and the [YAML configuration](/docs/apim_yamles/) documentation for more detailed information.
+* For API Gateway: Variable `env.MANAGEMENT.CONTENTSECURITYPOLICY`, in the `_apigateway/conf/envSettings.props_` file.
+* For API Manager: Variable `env.SERVICES.CONTENTSECURITYPOLICY`, in the `_apigateway/groups/{group-id}/{instance-id}/conf/envSettings.props_` file.
 
 ## Important changes
 
