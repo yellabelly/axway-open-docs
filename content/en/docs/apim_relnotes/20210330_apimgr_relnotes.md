@@ -16,14 +16,13 @@ Docker deployment is supported on Linux. For a summary of the system requirement
 
 The following new features and enhancements are available in this update.
 
-### placeholder 1
+### API Manager request rate limiter
 
-placeholder text
+The request rate limiter monitors the number of requests an individual user makes to API Manager during an active session. If the number of user requests in an individual session exceeds the configured boundaries, that user will be automatically logged out and will need to login again to continue using API Manager.
 
 For more information, see:
 
-* [some reference 1](/docs/placeholder)
-* [some reference 2](/docs/placeholder)
+* [Configure the API Manager request rate limiter](/docs/apim_administration/apimgr_admin/api_mgmt_config/#configure-the-api-manager-request-rate-limiter)
 
 ### placeholder 2
 
@@ -86,8 +85,8 @@ table of other issues
 
 The following are known issues for this update.
 
-| Internal ID | Description |
-| ----------- | - |
+| Internal ID | Description                                                                                                                                                                                                                                                                                                                                 |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | RDAPI-22573 | Service pack update fails with the following message when passphrases are in use: `"Problem connecting to store: Invalid passphrase for configuration"`.                                                                                                                                                                                    |
 | RDAPI-16486 | Changes in the mapper always require a reload in the Execute Data Maps filter and once reloaded then providing values for the required parameters must be repeated                                                                                                                                                                          |
 | RDAPI-17282 | Connector for Salesforce APIs in API Manager doesn't work or is impossible to configure                                                                                                                                                                                                                                                     |
