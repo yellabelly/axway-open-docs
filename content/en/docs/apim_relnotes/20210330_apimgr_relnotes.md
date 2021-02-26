@@ -18,11 +18,9 @@ The following new features and enhancements are available in this update.
 
 ### API Manager request rate limiter
 
-The request rate limiter monitors the number of requests an individual user makes to API Manager during an active session. If the number of user requests in an individual session exceeds the configured boundaries, that user will be automatically logged out and will need to login again to continue using API Manager.
+Rate limit monitors the number of requests that a user can send to API Manager during an active session. If the number of requests in an individual session exceeds the configured boundaries, the session is terminated and the user must log in again to continue using API Manager.
 
-For more information, see:
-
-* [Configure the API Manager request rate limiter](/docs/apim_administration/apimgr_admin/api_mgmt_config/#configure-the-api-manager-request-rate-limiter)
+For more information, see [Configure the API Manager request rate limiter](/docs/apim_administration/apimgr_admin/api_mgmt_config/#configure-api-manager-request-rate-limiter).
 
 ### placeholder 2
 
