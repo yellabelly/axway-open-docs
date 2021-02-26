@@ -16,6 +16,12 @@ Docker deployment is supported on Linux. For a summary of the system requirement
 
 The following new features and enhancements are available in this update.
 
+### Critical header parameter (“crit”)
+
+A “crit” header was added to the JWT Verify filter in Policy Studio. This allows you to add a “crit” header list to the filter, and the JWT token being processed in the filter is then validated against this list.
+
+For more information, see [JWT verify filter](/docs/apim_policydev/apigw_polref/integrity_additional/#jwtverify-filter).
+
 ### API Manager request rate limiter
 
 Rate limit monitors the number of requests that a user can send to API Manager during an active session. If the number of requests in an individual session exceeds the configured boundaries, the session is terminated and the user must log in again to continue using API Manager.
