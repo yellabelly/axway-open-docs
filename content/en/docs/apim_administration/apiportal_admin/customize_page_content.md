@@ -6,7 +6,6 @@ date: 2019-07-30T00:00:00.000Z
 description: Customize other features of your API Portal, such as sign up,
   login, and application settings.
 ---
-
 ## Add reCaptcha to sign up
 
 You can customize your sign up functionality by enabling reCaptcha
@@ -209,3 +208,15 @@ User sessions that remain active for extended periods of time are exposed to att
 2. Click **Save**.
 
 Since the session is destroyed after the specified period of time, the potential footprint of the session is eliminated, which helps to minimize attacks.
+
+## Show notifications for applications that are waiting for approval
+
+When the auto-approve setting is disabled, users can't use their newly-created applications until they are approved by an Organization administrator (Org admin).
+
+To remind the Org admin that there are applications waiting for approval, API Portal displays a notification with a link to the list of pending approval applications every time that the Org admin logs in to API Portal.
+
+To disabled the notification:
+
+1. In JAI, click **Components > API Portal > Additional settings**.
+2. Choose **No** for the **Show notifications for applications that are pending approval** field.
+3. Click **Save**.
