@@ -1,15 +1,58 @@
 {
-    "title": "Frequently asked questions",
-    "linkTitle": "Frequently asked questions",
-    "weight": 140,
-    "date": "2019-10-07",
-    "description": "Get answers to frequently asked questions about upgrade."
+"title": "Frequently asked questions",
+  "linkTitle": "Frequently asked questions",
+  "weight": 140,
+  "date": "2019-10-07",
+  "description": "Get answers to frequently asked questions about upgrade."
 }
 
 ## All upgrades
 
 The following FAQs are specific to all upgrades.
 
+### How to increase timeouts for `apply` 
+* All 7.7 vshell processes should be stopped
+
+* Move previous 7.7 upgrade directories and reset topology if it's not already clean
+```
+
+
+mv apigateway/upgrade_backup apigateway/upgrade_backup.old
+
+mv apigateway/upgrade/bin/out apigateway/upgrade/bin/out.old
+
+./managedomain --reset --username admin --password changeme
+```
+* The templates configurations must be amended in the table below with desired value for `maxTransTimeout` in `PrimaryStore.xml` before sysupgrade steps on each node/host.
+
+| Instance type | Template      |
+| ------------- | ------------- |
+| `Node Manager` | `apigateway/system/conf/templates/` |
+| `Node Manager` | `apigateway/system/conf/templates/VordelNodeManager/` |
+| `API Gateway` | `apigateway/system/conf/templates/FactoryConfiguration-VordelGateway.fed` |
+| `API Gateway` | `apigateway/system/conf/templates/FactoryConfiguration-VordelGateway/` |
+
+{{< alert title="Note" color="primary" >}}
+On Linux systems install the unzip package which is useful to check timeouts in .fed archive files e.g. `zipgrep maxTransTimeout FactoryConfiguration-VordelGateway.fed`
+{{< /alert >}}
+
+* run `sysupgrade export` on all the nodes
+* Important! Before continuing to the next `sysupgrade upgrade` step, the `maxTransTimeout` should be amended to desired value in the exported configuration PrimaryStore.xml:
+
+
+
+
+| Instance type | Export    | Notes |
+| ------------- | ------------- | ----- |
+| `Node Manager`      | `apigateway/upgrade/bin/out/export/esnm/conf/fed/` | For Admin Node Managers it may require to apply factor based on max number of instances in a group |
+| `API Gateway`      | `apigateway/upgrade/bin/out/export/esgroups/groups/group-2/f5304aa6-a0f5-4643-88b7-8cef992924e4/`     | group and config ids will vary |
+| `API Gateway` | `apigateway/upgrade/bin/out/export/esgroups/groups/group-2/f5304aa6-a0f5-4643-88b7-8cef992924e4.fed`      |    group and config ids will vary |
+
+
+* Important! The export and upgrade steps must be done for all nodes before continuing to the next sysupgrade apply step.
+
+* Important! 7.5.3 / 7.6.2 vshell processes should be stopped before running apply
+* Important! If topology has multiple Admin Node Managers, run sysupgrade apply step for Admin Node Manager nodes first.
 ### Why would you rerun export?
 
 You must rerun `export` if:
