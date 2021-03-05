@@ -256,4 +256,5 @@ Checking the instance trace may also have the following error :
 ```
 ERROR: Transaction to 127.0.0.1 expired after 240000 ms
 ```
-The solution is to increase the transaction timeout for node manager and instances. See "How to increase timeouts for apply"
+The solution is to increase the transaction timeout for node manager and instances. 
+See [How to increase timeouts for apply](/docs/apim_installation/apigw_upgrade/entries/upgrade_faq/#How-to-increase-timeouts-for-apply).
