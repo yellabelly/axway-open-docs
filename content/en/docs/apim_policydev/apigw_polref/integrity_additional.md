@@ -212,46 +212,49 @@ The resulting payload output is:
 "http://example.com/is_root":true}
 ```
 
-{{< alert title="Note" color="primary" >}}The **JWT Verify** filter automatically detects whether the input JWT is signed with hash-based message authentication code (HMAC) or asymmetric key and uses the corresponding settings as appropriate. For example, you can configure verification with HMAC or certificate, depending on the type of JWT received as input.{{< /alert >}}
+The **JWT Verify** filter automatically detects whether the input JWT is signed with hash-based message authentication code (HMAC) or asymmetric key, and it uses the corresponding settings as appropriate. For example, you can configure verification with HMAC or certificate, depending on the type of JWT received as input.
 
-Configure the following settings on the **JWT Verify** dialog:
+You can configure the following settings on the **JWT Verify** dialog:
 
-**Name**:
-Enter an appropriate name for the filter to display in a policy.
+**Name**: Enter an appropriate name for the filter to display in a policy.
 
-**Token location**:
-Enter the selector expression to retrieve the JWT to be verified. This must contain the value of token in the format of `HEADER.PAYLOAD.SIGNATURE`, but without the `Bearer` prefix. You can use a filter such as **Retrieve attribute from HTTP header** in your policy to get the token from any header. For example: `${http.headers["Authorization"].substring(7)}`
+**Token location**: Enter the selector expression to retrieve the JWT to be verified. This must contain the value of token in the format of `HEADER.PAYLOAD.SIGNATURE`, but without the `Bearer` prefix. You can use a filter, such as [Retrieve attribute from HTTP header](/docs/apim_policydev/apigw_polref/attributes_retrieve/#retrieve-from-http-header-filter), in your policy to get the token from any header. For example: `${http.headers["Authorization"].substring(7)}`
 
 You can configure the following optional settings in the **Verify using RSA/EC public key** section:
 
-**X509 certificate**:
-Select the certificate that is used to verify the payload from the certificate store.
+**X509 certificate**: Select the certificate that is used to verify the payload from the certificate store.
 
 {{< alert title="Note" color="primary" >}}Asymmetric keys are associated with the x509 certificate, but for verification, you only need the public key, which is encoded in the certificate. Alternatively, you can use a JSON Web Key (JWK) with a **Connect to URL** filter to download the key from a known source.{{< /alert >}}
 
-**Selector expression**:
-Alternatively, enter a selector expression to retrieve the alias of the certificate from the certificate store.
+**Selector expression**: Alternatively, enter a selector expression to retrieve the alias of the certificate from the certificate store.
 
 You can configure the following optional settings in the **Verify using symmetric key** section:
 
-**None**:
-Select if you do not want to verify tokens signed with HMAC.
+**None**: Select if you do not want to verify tokens signed with HMAC.
 
-**Shared key**:
-Enter the shared key that was used to sign the payload. The key should be provided as a base64-encoded byte array.
+**Shared key**: Enter the shared key that was used to sign the payload. The key should be provided as a base64-encoded byte array.
 
-**Selector expression**:
-Alternatively, enter a selector expression to obtain the shared key. The value returned by the selector should contain:
+**Selector expression**: Alternatively, enter a selector expression to obtain the shared key. The value returned by the selector should contain:
 
 * Byte array (possibly produced by a different filter)
 * Base64-encoded byte array
 
 You can configure the following optional setting in the **JWK from external source** section:
 
-**JSON web key**:
-You can verify signed tokens using a selector expression containing the value of a `JSON Web Key (JWK)`. The return type of the selector expression must be of type String.
+**JSON web key**: You can verify signed tokens using a selector expression containing the value of a `JSON Web Key (JWK)`. The return type of the selector expression must be of type String.
 
-**Critical Headers**: You can add a list of acceptable “crit” headers (list of JWT claims), which will be validated against the list of claims present in the “crit” header of the JWT token being processed. The validation works as follows:
+**Accepted Algorithms**: This list is populated with all the algorithms available for JWT signing, and it requires at least one algorithm to be selected. The selected algorithms will be validated against the "alg" header of the JWT token being processed. If none are selected, the following message is displayed, **You must enter a value for 'Accepted Algorithms'.**
+
+The runtime validation works as follows:
+
+* Successful, if the "alg" value of the incoming JWT token matches an algorithm on the accepted list.
+* Fail with `reason: The JWS token is not correct`, if the "alg" value of the incoming JWT is null.
+* Fail with `reason: The JWS token is not correct`, if there is no "alg" value in the incoming JWT.
+* Fail with `reason: Alg received not supported in the 'Accepted Algorithms' list defined in the JWT verification filter`, if the "alg" value of the incoming JWT is not selected from the list of accepted algorithms.
+
+**Critical Headers**: You can add a list of acceptable “crit” headers (list of JWT claims), which will be validated against the list of claims present in the “crit” header of the JWT token being processed.
+
+The runtime validation works as follows:
 
 * Successful, if all claims present in the “crit” header list of the JWT token match the lists you have configured.
 * Fail with `reason: unknown header`, if any of the claims present is the JWT token do not match the lists you have configured.
@@ -271,19 +274,15 @@ The **JWT Verify** filter verifies the JWT signature with the token payload onl
 
 ## Sign SMIME message filter
 
-You can use the **SMIME Sign**
-filter to digitally sign a multipart Secure/Multipurpose Internet Mail Extensions (SMIME) message when it passes through the API Gateway core pipeline. The recipient of the message can then verify the integrity of the SMIME message by validating the Public Key Cryptography Standards (PKCS) #7 signature.
+You can use the **SMIME Sign** filter to digitally sign a multipart Secure/Multipurpose Internet Mail Extensions (SMIME) message when it passes through the API Gateway core pipeline. The recipient of the message can then verify the integrity of the SMIME message by validating the Public Key Cryptography Standards (PKCS) #7 signature.
 
 Complete the following fields:
 
-**Name**:
-Enter an appropriate name for the filter to display in a policy.
+**Name**: Enter an appropriate name for the filter to display in a policy.
 
-**Sign Using Key**:
-Select the certificate that contains the public key associated with the private signing key to be used to sign the message.
+**Sign Using Key**: Select the certificate that contains the public key associated with the private signing key to be used to sign the message.
 
-**Create Detached Signature in Attachment**:
-Specifies whether to create a detached digital signature in the message attachment. This is selected by default. For example, this is useful when the software reading the message does not understand the PKCS#7 binary structure, because it can still display the signed content, but without verifying the signature.
+**Create Detached Signature in Attachment**: Specifies whether to create a detached digital signature in the message attachment. This is selected by default. For example, this is useful when the software reading the message does not understand the PKCS#7 binary structure, because it can still display the signed content, but without verifying the signature.
 
 If this is not selected, the message content is embedded with the PKCS#7 binary signature. This means that user agents that do not understand PKCS#7 cannot display the signed content. Intermediate systems between the sender and final recipient can modify the text content slightly (for example, line wrapping, whitespace, or text encoding). This might cause the message to fail signature validation due to changes in the signed text that are not malicious, nor necessarily affecting the meaning of the text.
 
@@ -296,14 +295,10 @@ You can select the certificates that contain the public keys to be used to verif
 
 Complete the following fields:
 
-**Name**:
-Enter an appropriate name for the filter to display in a policy.
+**Name**: Enter an appropriate name for the filter to display in a policy.
 
-**Certificates from the following list**:
-Select the certificates that contain the public keys to be used to verify the signature. This is the default option.
+**Certificates from the following list**: Select the certificates that contain the public keys to be used to verify the signature. This is the default option.
 
-**Certificate in attribute**:
-Alternatively, enter the message attribute that specifies the certificate that contains the public key to be used to verify the signature. Defaults to `${certificate}`.
+**Certificate in attribute**: Alternatively, enter the message attribute that specifies the certificate that contains the public key to be used to verify the signature. Defaults to `${certificate}`.
 
-**Remove Outer Envelope if Verification is Successful**:
-Select this option to remove the PKCS#7 signature and all its associated data from the message if it verifies successfully.
+**Remove Outer Envelope if Verification is Successful**: Select this option to remove the PKCS#7 signature and all its associated data from the message if it verifies successfully.
