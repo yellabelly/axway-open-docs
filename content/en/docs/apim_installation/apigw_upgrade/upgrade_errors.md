@@ -243,7 +243,7 @@ The solution is to always use the same `--anm_host` value for the first Admin No
 
 ### Timeout waiting for deploy to complete
 
-The default transaction timeout for the apply step is 4 minutes for every node manager (or admin node manager) involved. For a large deployment particularly API Manager this may not be long enough resulting in the following error:
+The [default transaction timeout](/docs/apim_policydev/apigw_gw_instances/general_remote_hosts/#advanced-settings) of `4` minutes for each Node Manager involved during the `sysupgrade` `apply` call might not be enough for the deploy to complete, particularly for large deployment like API Manager, resulting in the following error:
 
 ```
 ERROR: com.vordel.api.nm.NodeManagerAPIException: Node Manager error: error occurred on call from Node Manager on 'node.axway.int' to https://node.axway.int:8085' for URL '/api/configuration' and 'PUT'
@@ -251,10 +251,10 @@ HTTP status: 500.
 Error code: 102
 ```
 
-Checking the instance trace may also have the following error :
+The instance trace might also have the following error:
 
 ```
 ERROR: Transaction to 127.0.0.1 expired after 240000 ms
 ```
-The solution is to increase the transaction timeout for node manager and instances. 
-See [How to increase timeouts for apply](/docs/apim_installation/apigw_upgrade/entries/upgrade_faq/#How-to-increase-timeouts-for-apply).
+
+The solution for this issue is to increase the transaction timeout for node manager and instances. For more information, see [How to increase timeouts for apply](/docs/apim_installation/apigw_upgrade/upgrade_faq/#how-to-increase-timeouts-for-apply).
