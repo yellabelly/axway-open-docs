@@ -10,7 +10,7 @@
 
 The following FAQs are specific to all upgrades.
 
-### What happens if you change the old API Gateway installation after running export?
+### What happens if you change the old API Gateway installation after running `export`?
 
 If you make any changes to the old API Gateway installation after running `export` and you do not need these changes to be included in the new 7.7 installation, you do not need to take any action.
 
@@ -62,12 +62,12 @@ Increasing the timeout for node managers to prevent errors being returned when y
     * **API Gateway**: `apigateway/system/conf/templates/FactoryConfiguration-VordelGateway.fed`
     * **API Gateway**: `apigateway/system/conf/templates/FactoryConfiguration-VordelGateway/`
 
-    {{< alert title="Note" color="primary" >}}On Linux systems, you must install the unzip package, which is useful to check timeouts in `.fed` archive files. For example,
+    {{< alert title="Note" color="primary" >}}On Linux systems, you can install the unzip package, which is very useful to check timeouts in `.fed` archive files. For example,
 
     zipgrep maxTransTimeout FactoryConfiguration-VordelGateway.fed
     {{< /alert >}}
 
-5. Run the [export](/apim_installation/apigw_upgrade/upgrade_script/#export-command) option on all the nodes.
+5. Run the [export](/apim_installation/apigw_upgrade/upgrade_script/#export-command) command on all nodes.
 
 6. Amend `maxTransTimeout` to the desired value in the exported configuration `PrimaryStore.xml`:
 
@@ -75,7 +75,7 @@ Increasing the timeout for node managers to prevent errors being returned when y
     * **API Gateway**: `apigateway/upgrade/bin/out/export/esgroups/groups/group-2/f5304aa6-a0f5-4643-88b7-8cef992924e4/`. Group and configuration IDs will vary.
     * **API Gateway**: `apigateway/upgrade/bin/out/export/esgroups/groups/group-2/f5304aa6-a0f5-4643-88b7-8cef992924e4.fed`. Group and configuration IDs will vary.
 
-7. Perform the [export](/apim_installation/apigw_upgrade/upgrade_script/#export-command) and [upgrade](/docs/apim_installation/apigw_upgrade/upgrade_script/#upgrade-command) options for all nodes.
+7. Run the [export](/apim_installation/apigw_upgrade/upgrade_script/#export-command) and [upgrade](/docs/apim_installation/apigw_upgrade/upgrade_script/#upgrade-command) commands on all nodes.
 
 8. If topology has multiple Admin node managers, run the [apply](/apim_installation/apigw_upgrade/upgrade_script/#apply-command) step for the Admin node manager nodes first.
 
