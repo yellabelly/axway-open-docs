@@ -39,8 +39,10 @@ You must rerun `export` if:
 
 ### How to increase timeouts for `apply`
 
+Increasing the timeout for node managers to prevent errors being returned when you run the [apply](/apim_installation/apigw_upgrade/upgrade_script/#apply-command) command during an upgrade.
+
 1. Stop all 7.7 `vshell` processes.
-2. Move previous 7.7 upgrade directories:
+2. Back up previous 7.7 upgrade directories:
 
     ```
     mv apigateway/upgrade_backup apigateway/upgrade_backup.old
@@ -60,21 +62,22 @@ You must rerun `export` if:
     * **API Gateway**: `apigateway/system/conf/templates/FactoryConfiguration-VordelGateway.fed`
     * **API Gateway**: `apigateway/system/conf/templates/FactoryConfiguration-VordelGateway/`
 
-    {{< alert title="Note" color="primary" >}} On Linux systems, you must install the unzip package, which is useful to check timeouts in `.fed` archive files.
-    For example, `zipgrep maxTransTimeout FactoryConfiguration-VordelGateway.fed` {{< /alert >}}
+    {{< alert title="Note" color="primary" >}}On Linux systems, you must install the unzip package, which is useful to check timeouts in `.fed` archive files. For example,
 
-5. Run `sysupgrade export` on all the nodes.
+    zipgrep maxTransTimeout FactoryConfiguration-VordelGateway.fed
+    {{< /alert >}}
 
-6. Before continuing to the next `sysupgrade upgrade` step, amend `maxTransTimeout` to desired value in the exported configuration `PrimaryStore.xml`:
+5. Run the [export](/apim_installation/apigw_upgrade/upgrade_script/#export-command) option on all the nodes.
+
+6. Amend `maxTransTimeout` to the desired value in the exported configuration `PrimaryStore.xml`:
 
     * **Node Manager**: `apigateway/upgrade/bin/out/export/esnm/conf/fed/`. For Admin Node Managers, it might be require to apply factor based on the maximum number of instances in a group.
     * **API Gateway**: `apigateway/upgrade/bin/out/export/esgroups/groups/group-2/f5304aa6-a0f5-4643-88b7-8cef992924e4/`. Group and configuration IDs will vary.
     * **API Gateway**: `apigateway/upgrade/bin/out/export/esgroups/groups/group-2/f5304aa6-a0f5-4643-88b7-8cef992924e4.fed`. Group and configuration IDs will vary.
 
-7. Perform the *export* and *upgrade* steps for all nodes before continuing to the next `sysupgrade` apply step.
+7. Perform the [export](/apim_installation/apigw_upgrade/upgrade_script/#export-command) and [upgrade](/docs/apim_installation/apigw_upgrade/upgrade_script/#upgrade-command) options for all nodes.
 
-* You must stop any API Gateway 7.5.3 and 7.6.2 `vshell` processes before running apply.
-* If topology has multiple Admin node managers, run the `sysupgrade apply` step for the Admin node manager nodes first.
+8. If topology has multiple Admin node managers, run the [apply](/apim_installation/apigw_upgrade/upgrade_script/#apply-command) step for the Admin node manager nodes first.
 
 ### Why would you rerun `apply`?
 
